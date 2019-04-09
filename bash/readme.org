@@ -228,6 +228,26 @@ busy() (
   done
   wait
 )
+declare -rfx busy
+#+end_src
+
+Decrypt [[https://github.com/andOTP/andOTP][andOTP]] AES backups:
+
+#+begin_src shell
+andOTP() (
+  set -eu
+  hash dd hexdump openssl stat
+  if [ $# -ne 1 ]; then
+    >&2 echo 'usage: andOTP path/to/otp_accounts.json.aes'
+    return 1
+  fi
+  # first 12 bytes IV
+  # last 16 bytes tag
+  bytes=$(wc -c < "$1")
+  iv=$(dd if="$1" bs=1 count=12 2>/dev/null | hexdump -ve '/1 "%02x"')
+  dd if="$1" bs=1 skip=12 count=$((bytes - 12 - 16)) 2>/dev/null | openssl enc -d -aes-256-gcm -iv "$iv" -nosalt -md sha256
+)
+declare -rfx andOTP
 #+end_src
 
 ** EDITOR
