@@ -12,6 +12,7 @@
   - [[#moving-around][Moving around]]
   - [[#lighter-mode-line][Lighter mode-line]]
   - [[#line-numbering][Line numbering]]
+  - [[#indentation-guides][Indentation guides]]
   - [[#buffer-dimming][Buffer dimming]]
   - [[#code-rendering][Code rendering]]
 - [[#social][Social]]
@@ -406,6 +407,23 @@ Join them together as they are already propertized in case of highlight."
                       :background (when (bound-and-true-p global-hl-line-mode)
                                     (face-attribute 'hl-line :background nil t)))
   (global-display-line-numbers-mode))
+#+end_src
+
+** Indentation guides
+
+*Disabled for now.*
+
+Display some guides to reflect the indentation level:
+#+begin_src
+(use-package highlight-indent-guides
+  :straight (:host github :repo "DarthFennec/highlight-indent-guides")
+  :hook ((prog-mode . highlight-indent-guides-mode)
+         (text-mode . highlight-indent-guides-mode))
+  :config
+  (setq highlight-indent-guides-method 'character ; unfortunately, means it's copy/pastable
+        highlight-indent-guides-responsive 'stack
+        highlight-indent-guides-character ?\| ; I prefer ASCII characters
+        highlight-indent-guides-delay 0))
 #+end_src
 
 ** Buffer dimming
